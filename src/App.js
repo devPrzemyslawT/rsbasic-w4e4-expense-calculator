@@ -1,8 +1,7 @@
 import "./App.css";
 import Form from "./component/Form/Form";
-import List from "./component/List/List";
 import HeaderElem from "./component/Header/header";
-import { incomesData, expensesData } from "./component/Utils/data/data";
+
 
 function App() {
 	return (
