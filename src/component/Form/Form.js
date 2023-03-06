@@ -1,8 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-import { filterByType } from "../Utils/Fun/function";
+import { filterByType, IncomeType, ExpenseType } from "../Utils/Fun/function";
 import "./Form.css";
+
+import UList from "../UList/UList";
 
 let nextId = 0;
 const Form = () => {
@@ -20,6 +22,9 @@ const Form = () => {
 			type: "income",
 		},
 	]);
+
+	const [filtDataIncomes, setFiltDataIncomes] = useState([{}]);
+	const [filtDataExpenses, setFiltDataExpenses] = useState([{}]);
 
 	const handleOnFormChange = e => {
 		setFormState({
@@ -45,6 +50,16 @@ const Form = () => {
 			]
 		);
 	};
+
+	useEffect(() => {
+		// console.log("Hello from useEffect");
+		// console.log("original table", tableState);
+		// console.log("incomes:", filterByType(tableState, IncomeType));
+		// console.log("expenses:", filterByType(tableState, ExpenseType));
+		setFiltDataIncomes(filterByType(tableState, IncomeType));
+		setFiltDataExpenses(filterByType(tableState, ExpenseType));
+		// console.log(filtDataIncomes);
+	}, [tableState]);
 
 	return (
 		<form
@@ -90,38 +105,13 @@ const Form = () => {
 
 			<button onClick={handleSubmit}>Add</button>
 			<div>---------- Incomes ----------</div>
-			<ul>
-				{/* {tableState.map(data => { */}
-				{filterByType(tableState, "income").map(data => {
-					const { text, value, type, id } = data;
 
-					return (
-						<li key={id}>
-							<div>
-								{text}:<strong>{value}$</strong>
-							</div>
-						</li>
-					);
-				})}
-			</ul>
+			<UList newData={filtDataIncomes}></UList>
 			<div> ---------- Expenses ---------- </div>
-			<ul>
-				{/* {tableState.map(data => { */}
-				{filterByType(tableState, "expense").map(data => {
-					const { text, value, type, id } = data;
 
-					return (
-						<li key={id}>
-							<div>
-								{text}:<strong>{value}$</strong>
-							</div>
-						</li>
-					);
-				})}
-			</ul>
+			<UList newData={filtDataExpenses}></UList>
+
 			<div> ---------- Summary ---------- </div>
-
-			<ul></ul>
 		</form>
 	);
 };
