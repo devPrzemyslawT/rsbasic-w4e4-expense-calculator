@@ -10,7 +10,7 @@ const UList = props => {
 				return (
 					<li key={`${type}_${id}`}>
 						<div>
-							{text}:<strong>{value}$</strong>
+							{text}: <strong> {value}$</strong>
 						</div>
 					</li>
 				);

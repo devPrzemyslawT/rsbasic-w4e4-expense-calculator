@@ -1,11 +1,17 @@
 import React from "react";
 import { useState, useEffect } from "react";
 
-import { filterByType, IncomeType, ExpenseType } from "../Utils/Fun/function";
+import {
+	addValues,
+	sumValue,
+	filterByType,
+	IncomeType,
+	ExpenseType,
+} from "../Utils/Fun/function";
 import "./Form.css";
 
 import UList from "../UList/UList";
-
+import Paragraph from "../Para/Paragraph";
 let nextId = 0;
 const Form = () => {
 	const [formState, setFormState] = useState({
@@ -17,7 +23,7 @@ const Form = () => {
 	const [tableState, setTableState] = useState([
 		{
 			id: 0,
-			text: "Pensja",
+			text: "Salary",
 			value: 2000,
 			type: "income",
 		},
@@ -25,6 +31,9 @@ const Form = () => {
 
 	const [filtDataIncomes, setFiltDataIncomes] = useState([{}]);
 	const [filtDataExpenses, setFiltDataExpenses] = useState([{}]);
+	const [inValue, setInValue] = useState("0");
+	const [exValue, setExValue] = useState("0");
+	const [sumAllValue, setSumAllValue] = useState("0");
 
 	const handleOnFormChange = e => {
 		setFormState({
@@ -52,14 +61,21 @@ const Form = () => {
 	};
 
 	useEffect(() => {
-		// console.log("Hello from useEffect");
-		// console.log("original table", tableState);
-		// console.log("incomes:", filterByType(tableState, IncomeType));
-		// console.log("expenses:", filterByType(tableState, ExpenseType));
 		setFiltDataIncomes(filterByType(tableState, IncomeType));
 		setFiltDataExpenses(filterByType(tableState, ExpenseType));
-		// console.log(filtDataIncomes);
 	}, [tableState]);
+
+	useEffect(() => {
+		setInValue(sumValue(filtDataIncomes));
+	}, [filtDataIncomes]);
+
+	useEffect(() => {
+		setExValue(sumValue(filtDataExpenses));
+	}, [filtDataExpenses]);
+
+	useEffect(() => {
+		setSumAllValue(addValues(inValue, exValue));
+	}, [inValue, exValue]);
 
 	return (
 		<form
@@ -102,16 +118,17 @@ const Form = () => {
 					</div>
 				</fieldset>
 			</div>
-
 			<button onClick={handleSubmit}>Add</button>
 			<div>---------- Incomes ----------</div>
-
 			<UList newData={filtDataIncomes}></UList>
 			<div> ---------- Expenses ---------- </div>
-
 			<UList newData={filtDataExpenses}></UList>
-
 			<div> ---------- Summary ---------- </div>
+			<div>
+				<Paragraph label='Incomes' value={inValue}></Paragraph>
+				<Paragraph label='Expenses' value={exValue}></Paragraph>
+				<Paragraph label='You have' value={sumAllValue}></Paragraph>
+			</div>
 		</form>
 	);
 };
