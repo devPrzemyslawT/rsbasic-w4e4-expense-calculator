@@ -7,9 +7,9 @@ import { incomesData, expensesData } from "./component/Utils/data/data";
 function App() {
 	return (
 		<div className='App'>
-			{/* <div className='App-header'>
+			<div className='App-header'>
 				<HeaderElem></HeaderElem>
-			</div> */}
+			</div>
 			<div className="App-form'">
 				<Form></Form>
 			</div>
